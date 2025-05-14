@@ -1,0 +1,306 @@
+{% load static %}
+<html>
+<head>
+    <title>User Register</title>
+    <style>
+        .bn632-hover {
+            width: 160px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            margin: 20px;
+            height: 55px;
+            text-align:center;
+            border: none;
+            background-size: 300% 100%;
+            border-radius: 50px;
+            -o-transition: all .4s ease-in-out;
+            -webkit-transition: all .4s ease-in-out;
+            transition: all .4s ease-in-out;
+        }
+
+        .bn632-hover:hover {
+            background-position: 100% 0;
+            -o-transition: all .4s ease-in-out;
+            -webkit-transition: all .4s ease-in-out;
+            transition: all .4s ease-in-out;
+        }
+
+        .bn632-hover:focus {
+            outline: none;
+        }
+
+        .bn632-hover.bn23 {
+            background-image: linear-gradient(
+                to right,
+                #009245,
+                #fcee21,
+                #00a8c5,
+                #d9e021
+            );
+            box-shadow: 0 4px 15px 0 rgba(83, 176, 57, 0.75);
+        }
+
+        table,th,td{
+            padding:20px;
+        }
+        
+        form{
+            border:1px solid #22c4586c;
+            padding:10px;
+            margin:20px;
+        }
+        
+        h1{
+            color: beige;
+        }
+        
+        body{
+            background-image: url("{% static '\images\ev.jpeg' %}");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+        
+        input[type=text], select, input[type=password], input[type=email] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family:"Times New Roman";
+            font-size:150%; 
+        }
+        
+        .error {
+            color: #ff0000;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .valid {
+            border: 2px solid #4CAF50 !important;
+        }
+        
+        .invalid {
+            border: 2px solid #f44336 !important;
+        }
+    </style>
+</head>
+<body>
+    <form id="registrationForm" action="/register/" method="post" onsubmit="return validateForm()">
+        {% csrf_token %}
+        <center>
+            <table>
+                <b><h1>REGISTRATION FORM</h1></b>
+                <tr>
+                    <td>
+                        <input type="text" name="rfname" id="fullname" placeholder="Enter Your Name" required>
+                        <span id="nameError" class="error"></span>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <input type="text" name="rcontact" id="phone" placeholder="Enter Your Phone Number" required>
+                        <span id="phoneError" class="error"></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input type="email" name="remail" id="email" placeholder="Enter Your Email" required>
+                        <span id="emailError" class="error"></span>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <input type="text" name="runame" id="username" placeholder="Enter User Name" required>
+                        <span id="usernameError" class="error"></span>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <input type="password" name="rpass" id="password" placeholder="Enter Your Password" required>
+                        <span id="passwordError" class="error"></span>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <input type="password" id="confirmPassword" placeholder="Confirm Your Password" required>
+                        <span id="confirmPasswordError" class="error"></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th><input type="submit" class="bn632-hover bn23" value="Register"></th>
+                </tr>
+            </table>
+            <button><a href="/index" class="bn632-hover bn23">BACK</a></button>
+        </center>
+    </form>
+
+    <script>
+        // Real-time validation functions
+        document.getElementById('fullname').addEventListener('input', validateName);
+        document.getElementById('phone').addEventListener('input', validatePhone);
+        document.getElementById('email').addEventListener('input', validateEmail);
+        document.getElementById('username').addEventListener('input', validateUsername);
+        document.getElementById('password').addEventListener('input', validatePassword);
+        document.getElementById('confirmPassword').addEventListener('input', validateConfirmPassword);
+
+        function validateName() {
+            const name = document.getElementById('fullname').value.trim();
+            const errorElement = document.getElementById('nameError');
+            
+            if (name.length < 3) {
+                errorElement.textContent = "Name must be at least 3 characters";
+                this.classList.add('invalid');
+                this.classList.remove('valid');
+                return false;
+            } else if (!/^[a-zA-Z ]+$/.test(name)) {
+                errorElement.textContent = "Name can only contain letters and spaces";
+                this.classList.add('invalid');
+                this.classList.remove('valid');
+                return false;
+            } else {
+                errorElement.textContent = "";
+                this.classList.add('valid');
+                this.classList.remove('invalid');
+                return true;
+            }
+        }
+
+        function validatePhone() {
+            const phone = document.getElementById('phone').value.trim();
+            const errorElement = document.getElementById('phoneError');
+            const phoneRegex = /^[0-9]{10}$/;
+            
+            if (!phoneRegex.test(phone)) {
+                errorElement.textContent = "Please enter a valid 10-digit phone number";
+                this.classList.add('invalid');
+                this.classList.remove('valid');
+                return false;
+            } else {
+                errorElement.textContent = "";
+                this.classList.add('valid');
+                this.classList.remove('invalid');
+                return true;
+            }
+        }
+
+        function validateEmail() {
+            const email = document.getElementById('email').value.trim();
+            const errorElement = document.getElementById('emailError');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!emailRegex.test(email)) {
+                errorElement.textContent = "Please enter a valid email address";
+                this.classList.add('invalid');
+                this.classList.remove('valid');
+                return false;
+            } else {
+                errorElement.textContent = "";
+                this.classList.add('valid');
+                this.classList.remove('invalid');
+                return true;
+            }
+        }
+
+        function validateUsername() {
+            const username = document.getElementById('username').value.trim();
+            const errorElement = document.getElementById('usernameError');
+            
+            if (username.length < 4) {
+                errorElement.textContent = "Username must be at least 4 characters";
+                this.classList.add('invalid');
+                this.classList.remove('valid');
+                return false;
+            } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+                errorElement.textContent = "Username can only contain letters, numbers and underscores";
+                this.classList.add('invalid');
+                this.classList.remove('valid');
+                return false;
+            } else {
+                errorElement.textContent = "";
+                this.classList.add('valid');
+                this.classList.remove('invalid');
+                return true;
+            }
+        }
+
+        function validatePassword() {
+            const password = document.getElementById('password').value;
+            const errorElement = document.getElementById('passwordError');
+            
+            if (password.length < 8) {
+                errorElement.textContent = "Password must be at least 8 characters";
+                this.classList.add('invalid');
+                this.classList.remove('valid');
+                return false;
+            } else if (!/[A-Z]/.test(password)) {
+                errorElement.textContent = "Password must contain at least one uppercase letter";
+                this.classList.add('invalid');
+                this.classList.remove('valid');
+                return false;
+            } else if (!/[0-9]/.test(password)) {
+                errorElement.textContent = "Password must contain at least one number";
+                this.classList.add('invalid');
+                this.classList.remove('valid');
+                return false;
+            } else if (!/[^A-Za-z0-9]/.test(password)) {
+                errorElement.textContent = "Password must contain at least one special character";
+                this.classList.add('invalid');
+                this.classList.remove('valid');
+                return false;
+            } else {
+                errorElement.textContent = "";
+                this.classList.add('valid');
+                this.classList.remove('invalid');
+                return true;
+            }
+        }
+
+        function validateConfirmPassword() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const errorElement = document.getElementById('confirmPasswordError');
+            
+            if (password !== confirmPassword) {
+                errorElement.textContent = "Passwords do not match";
+                this.classList.add('invalid');
+                this.classList.remove('valid');
+                return false;
+            } else {
+                errorElement.textContent = "";
+                this.classList.add('valid');
+                this.classList.remove('invalid');
+                return true;
+            }
+        }
+
+        function validateForm() {
+            const isNameValid = validateName();
+            const isPhoneValid = validatePhone();
+            const isEmailValid = validateEmail();
+            const isUsernameValid = validateUsername();
+            const isPasswordValid = validatePassword();
+            const isConfirmPasswordValid = validateConfirmPassword();
+            
+            if (!isNameValid || !isPhoneValid || !isEmailValid || !isUsernameValid || !isPasswordValid || !isConfirmPasswordValid) {
+                alert("Please fix all errors before submitting");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

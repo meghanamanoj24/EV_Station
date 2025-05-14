@@ -1,0 +1,23 @@
+{% block content %}
+<center>
+    <form method="post">
+        {% csrf_token %}
+        <br><br><br><br>
+        <h1>Verify OTP</h1>
+        <table>
+            <tr>
+                <td><input type="hidden" name="email" value="{{ email }}"></td>
+            </tr>
+            <tr>
+                <td><input type="text" name="otp" placeholder="Enter OTP" required style="width: 100%; padding: 12px 20px; margin: 8px 0; font-family: 'Times New Roman'; font-size: 150%;"></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">
+                    <input type="submit" class="bn632-hover bn23" value="Verify OTP">
+                </td>
+            </tr>
+        </table>
+    </form>
+    <button><a href="/password-reset/" class="bn632-hover bn23">Back</a></button>
+</center>
+{% endblock %}

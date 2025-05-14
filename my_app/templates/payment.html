@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EV Payment</title>
+    <style>
+    * {
+        box-sizing: border-box;
+        padding: 0px;
+        margin: 0px;
+        font-family: cursive;
+    }
+    html, body {
+        height: 100%;
+    }
+    body {
+        background-color: #f1f5f8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .card {
+        background-color: white;
+        padding: 25px;
+        border: 1px solid #bbbbbb;
+        border-radius: 5px;
+        box-shadow: 1px 1px 10px 0px rgb(0 0 0 / 25%);
+    }
+    .title {
+        text-align: center;
+        letter-spacing: 1px;
+    }
+    .muted {
+        color: #8e7f7f;
+        display: block;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    .btn_container {
+        padding: 20px;
+        text-align: center;
+    }
+    .btn {
+        border-radius: 4px;
+        cursor: pointer;
+        padding: 10px 20px;
+        background-color: #2ecc71;
+        color: white;
+        font-size: 1.2em;
+        font-weight: 600;
+        letter-spacing: 1px;
+        border: none;
+    }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 class="title">Complete Your Payment</h1>
+        <small class="muted">Secure payment via Razorpay</small>
+        <div class="btn_container">
+            <button class="btn" id="pay-btn">Pay ₹{{ amount_in_rupees }}</button>
+        </div>
+    </div>
+
+    <!-- Razorpay Integration -->
+    <!-- Razorpay Integration -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+        key: "{{ razorpay_merchant_key }}",
+        amount: "{{ razorpay_amount }}", 
+        currency: "{{ currency }}",
+        name: "EV Charging Station",
+        description: "Payment for EV Charging",
+        order_id: "{{ razorpay_order_id }}",
+        handler: function (response) {
+            window.location.href = "{{ callback_url }}?payment_id=" + response.razorpay_payment_id + 
+                                "&order_id=" + response.razorpay_order_id + 
+                                "&signature=" + response.razorpay_signature;
+        },
+        prefill: {
+            name: "{{ user_fullname }}",
+            email: "{{ user_email }}",
+            contact: "{{ user_contact }}"
+        },
+        theme: {
+            color: "#3399cc"
+        }
+    };
+
+    var rzp1 = new Razorpay(options);
+    
+    document.getElementById('pay-btn').onclick = function(e){
+        rzp1.open();
+        e.preventDefault();
+    }
+</script>
+</body>
+</html>
