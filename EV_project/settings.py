@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-35#yl*1=^)ae@4u)(%gz!k&zyu#4txd8%7@0augkksl6c9w5hi
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -138,15 +138,3 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'meghana.24pmc134@mariancollege.org'  # Your email address
 EMAIL_HOST_PASSWORD = 'hida krwh dzvd osss'  # The app password you generated
 DEFAULT_FROM_EMAIL = 'meghana.24pmc134@mariancollege.org'  # Same as EMAIL_HOST_USER
-
-
-
-import os
-from pathlib import Path
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-STATIC_URL = '/static/'
-
-# ✅ This is missing – add it:
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
